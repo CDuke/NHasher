@@ -18,6 +18,9 @@ namespace NHasher
         private ulong _h2;
 
 
+        public MurmurHash3X64L128()
+            : this(0) { }
+
         public MurmurHash3X64L128(int seed)
         {
             _seed = (ulong)seed;
