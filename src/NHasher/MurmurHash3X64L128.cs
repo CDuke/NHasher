@@ -22,8 +22,20 @@ namespace NHasher
             : this(0) { }
 
         public MurmurHash3X64L128(int seed)
+            : this((ulong)seed)
         {
-            _seed = (ulong)seed;
+        }
+
+        public MurmurHash3X64L128(uint seed)
+            : this((ulong)seed)
+        {
+        }
+
+        public MurmurHash3X64L128(ulong seed)
+        {
+            _seed = seed;
+            _h1 = seed;
+            _h2 = seed;
         }
 
         public override void Initialize()
