@@ -200,26 +200,4 @@ namespace NHasher
             return k;
         }
     }
-
-    internal static class Extensions
-    {
-        public static ulong RotateLeft(this ulong original, int bits)
-        {
-            return (original << bits) | (original >> (64 - bits));
-        }
-
-        public static ulong RotateRight(this ulong original, int bits)
-        {
-            return (original >> bits) | (original << (64 - bits));
-        }
-
-        internal static unsafe ulong GetUInt64(this byte[] data, int position)
-        {
-            // we only read aligned longs, so a simple casting is enough
-            fixed (byte* pbyte = &data[position])
-            {
-                return *((ulong*)pbyte);
-            }
-        }
-    }
 }
