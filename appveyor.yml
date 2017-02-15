@@ -35,7 +35,7 @@ artifacts:
   - path: artifacts\**\*.nupkg
 
 deploy:
-- provider: Nuget
+- provider: NuGet
   api_key:
     secure: YC6Q/kxtfWYsGJbza6xagn8vrxy+o9ejReed0uhLefJSds3PgBzNeXIIJky6JY3f
   skip_symbols: false
