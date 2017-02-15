@@ -7,6 +7,11 @@
             return (original << bits) | (original >> (64 - bits));
         }
 
+        public static uint RotateLeft(this uint original, int bits)
+        {
+            return (original << bits) | (original >> (32 - bits));
+        }
+
         internal static unsafe ulong GetUInt64(this byte[] data, int position)
         {
             // we only read aligned longs, so a simple casting is enough

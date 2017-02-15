@@ -3,32 +3,32 @@ using System.Security.Cryptography;
 
 namespace NHasher
 {
-    public class XXHash64 : HashAlgorithm
+    public class XXHash32 : HashAlgorithm
     {
-        private const int HashSizeBytes = 8;
-        private const int BufferSize = 32;
+        private const int HashSizeBytes = 4;
+        private const int BufferSize = 16;
 
-        private readonly ulong _seed;
+        private readonly uint _seed;
 
-        private const ulong Prime1 = 11400714785074694791UL;
-        private const ulong Prime2 = 14029467366897019727UL;
-        private const ulong Prime3 = 1609587929392839161UL;
-        private const ulong Prime4 = 9650029242287828579UL;
-        private const ulong Prime5 = 2870177450012600261UL;
+        private const uint Prime1 = 2654435761U;
+        private const uint Prime2 = 2246822519U;
+        private const uint Prime3 = 3266489917U;
+        private const uint Prime4 = 668265263U;
+        private const uint Prime5 = 374761393U;
 
-        private ulong _length;
-        private ulong _v1;
-        private ulong _v2;
-        private ulong _v3;
-        private ulong _v4;
+        private uint _length;
+        private uint _v1;
+        private uint _v2;
+        private uint _v3;
+        private uint _v4;
         private int _bufUsed;
         private readonly byte[] _buffer;
 
         public override int HashSize => 64;
 
-        public XXHash64() : this(0) { }
+        public XXHash32() : this(0) { }
 
-        public XXHash64(ulong seed)
+        public XXHash32(uint seed)
         {
             _seed = seed;
             _buffer = new byte[BufferSize];
@@ -38,7 +38,7 @@ namespace NHasher
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
             var n = cbSize - ibStart;
-            _length += (ulong)n;
+            _length += (uint)n;
 
             var r = BufferSize - _bufUsed;
             if (n < r)
@@ -54,9 +54,9 @@ namespace NHasher
             {
                 Array.Copy(array, ibStart, _buffer, _bufUsed, r);
                 _v1 = Round(_v1, _buffer, 0);
-                _v2 = Round(_v2, _buffer, 8);
-                _v3 = Round(_v3, _buffer, 16);
-                _v4 = Round(_v4, _buffer, 24);
+                _v2 = Round(_v2, _buffer, 4);
+                _v3 = Round(_v3, _buffer, 8);
+                _v4 = Round(_v4, _buffer, 12);
                 p = r;
                 _bufUsed = 0;
             }
@@ -67,13 +67,13 @@ namespace NHasher
                 do
                 {
                     _v1 = Round(_v1, array, p);
-                    p += 8;
+                    p += 4;
                     _v2 = Round(_v2, array, p);
-                    p += 8;
+                    p += 4;
                     _v3 = Round(_v3, array, p);
-                    p += 8;
+                    p += 4;
                     _v4 = Round(_v4, array, p);
-                    p += 8;
+                    p += 4;
                 } while (p <= limit);
             }
 
@@ -87,15 +87,11 @@ namespace NHasher
 
         protected override unsafe byte[] HashFinal()
         {
-            ulong h;
+            uint h;
 
             if (_length >= BufferSize)
             {
                 h = _v1.RotateLeft(1) + _v2.RotateLeft(7) + _v3.RotateLeft(12) + _v4.RotateLeft(18);
-                h = MergeRound(h, _v1);
-                h = MergeRound(h, _v2);
-                h = MergeRound(h, _v3);
-                h = MergeRound(h, _v4);
             }
             else
             {
@@ -105,39 +101,30 @@ namespace NHasher
             h += _length;
 
             var p = 0;
-            while (p + 8 <= _bufUsed)
+            while (p + 4 <= _bufUsed)
             {
-                var k1 = Round(0, _buffer, p);
-                h ^= k1;
-                h = h.RotateLeft(27) * Prime1 + Prime4;
-                p += 8;
-            }
-
-            if (p + 4 <= _bufUsed)
-            {
-                h ^= _buffer.GetUInt32(p) * Prime1;
-
-                h = h.RotateLeft(23) * Prime2 + Prime3;
+                h += _buffer.GetUInt32(p) * Prime3;
+                h = h.RotateLeft(17) * Prime4;
                 p += 4;
             }
 
             while (p < _bufUsed)
             {
-                h ^= _buffer[p] * Prime5;
+                h += _buffer[p] * Prime5;
                 h = h.RotateLeft(11) * Prime1;
                 p++;
             }
 
-            h ^= h >> 33;
+            h ^= h >> 15;
             h *= Prime2;
-            h ^= h >> 29;
+            h ^= h >> 13;
             h *= Prime3;
-            h ^= h >> 32;
+            h ^= h >> 16;
 
             var hash = new byte[HashSizeBytes];
             fixed (byte* b = &hash[0])
             {
-                *((ulong*)b) = h;
+                *((uint*)b) = h;
             }
 
             return hash;
@@ -150,7 +137,7 @@ namespace NHasher
 
         private void Reset()
         {
-            _length = 0L;
+            _length = 0;
             _v1 = _seed + Prime1 + Prime2;
             _v2 = _seed + Prime2;
             _v3 = _seed;
@@ -158,25 +145,16 @@ namespace NHasher
             _bufUsed = 0;
         }
 
-        private static ulong Round(ulong acc, byte[] buffer, int position)
+        private static uint Round(uint acc, byte[] buffer, int position)
         {
-            var input = buffer.GetUInt64(position);
+            var input = buffer.GetUInt32(position);
             return Round(acc, input);
         }
 
-
-        private static ulong MergeRound(ulong acc, ulong val)
-        {
-            val = Round(0, val);
-            acc ^= val;
-            acc = acc * Prime1 + Prime4;
-            return acc;
-        }
-
-        private static ulong Round(ulong acc, ulong input)
+        private static uint Round(uint acc, uint input)
         {
             acc += input * Prime2;
-            acc = acc.RotateLeft(31);
+            acc = acc.RotateLeft(13);
             acc *= Prime1;
             return acc;
         }
