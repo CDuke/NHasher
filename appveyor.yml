@@ -35,7 +35,7 @@ artifacts:
   - path: artifacts\**\*.nupkg
 
 deploy:
-  provider: Nuget
+- provider: Nuget
   api_key:
     secure: YC6Q/kxtfWYsGJbza6xagn8vrxy+o9ejReed0uhLefJSds3PgBzNeXIIJky6JY3f
   skip_symbols: false
@@ -43,7 +43,7 @@ deploy:
   on:
     appveyor_repo_tag: true
 
-  provider: GitHub
+- provider: GitHub
   tag: Nightly
   release: Current Nightly ({APPVEYOR_REPO_COMMIT_TIMESTAMP})
   description: 'Version: {GIT_VERSION_TAG}'
