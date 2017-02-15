@@ -12,9 +12,8 @@
       }
     }
   },
-  "scripts": {
-    "postcompile": [
-      "dotnet pack --no-build --configuration %compile:Configuration%"
-    ]
+  "packOptions": {
+    "licenseUrl": "https://github.com/CDuke/NHasher/LICENSE.txt",
+    "projectUrl": "https://github.com/CDuke/NHasher/",
   }
 }
