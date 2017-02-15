@@ -42,3 +42,13 @@ deploy:
   artifact: /.*\.nupkg/
   on:
     appveyor_repo_tag: true
+
+#   provider: GitHub
+#   tag: Nightly
+#   release: Current Nightly ({APPVEYOR_REPO_COMMIT_TIMESTAMP})
+#   description: 'Version: {GIT_VERSION_TAG}'
+#   auth_token:
+#     secure: M7aTLuBvKPwYdLI9HQWIzzu/DFg5aZmPse441fhZgGyhdpM779pt8wwOeyRXQyux
+#   artifact: /.*\.nupkg/
+#   on:
+#     branch: master
