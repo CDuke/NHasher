@@ -55,13 +55,13 @@ namespace NHasher
                 Array.Copy(array, ibStart, _buffer, _bufUsed, r);
                 _v1 = Round(_v1, _buffer, 0);
                 _v2 = Round(_v2, _buffer, 8);
-                _v3 = Round(_v1, _buffer, 16);
-                _v4 = Round(_v1, _buffer, 24);
+                _v3 = Round(_v3, _buffer, 16);
+                _v4 = Round(_v4, _buffer, 24);
                 p = r;
                 _bufUsed = 0;
             }
 
-            if (p + 32 <= n)
+            if (p + BufferSize <= n)
             {
                 var limit = n - 32;
                 do
@@ -89,7 +89,7 @@ namespace NHasher
         {
             ulong h;
 
-            if (_length >= 32)
+            if (_length >= BufferSize)
             {
                 h = _v1.RotateLeft(1) + _v2.RotateLeft(7) + _v3.RotateLeft(12) + _v4.RotateLeft(18);
                 h = MergeRound(h, _v1);
