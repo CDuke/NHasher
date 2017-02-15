@@ -1,22 +1,44 @@
 version: '1.0.{build}'
+
+branches:
+  only:
+    - master
+
 configuration:
-- Debug
-- Release
+  - Release
+
+os: Visual Studio 2015
+
 platform: Any CPU
+
 environment:
   # Don't report back to the mothership
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
 init:
-- ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
+  - git config --global core.autocrlf true
+  - ps: $Env:LABEL = "beta1-build" + $Env:APPVEYOR_BUILD_NUMBER
+
 before_build:
-- appveyor-retry dotnet restore
+  - appveyor-retry dotnet restore
+
 build_script:
-- dotnet build "src\NHasher" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+  - dotnet build "src\NHasher" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+
 after_build:
-- dotnet pack "src\NHasher" -c %CONFIGURATION% --no-build --version-suffix %LABEL% -o artifacts
+  - dotnet pack "src\NHasher" -c %CONFIGURATION% --no-build --version-suffix %LABEL% -o artifacts
+
 test_script:
-- dotnet test "test\NHasher.Tests" -c %CONFIGURATION%
+  - dotnet test "test\NHasher.Tests" -c %CONFIGURATION%
+
 artifacts:
-- path: artifacts\**\*.*
-cache:
-- '%USERPROFILE%\.nuget\packages'
+  - path: artifacts\**\*.nupkg
+
+deploy:
+  provider: Nuget
+  api_key:
+    secure: YC6Q/kxtfWYsGJbza6xagn8vrxy+o9ejReed0uhLefJSds3PgBzNeXIIJky6JY3f
+  skip_symbols: false
+  artifact: /.*\.nupkg/
+  on:
+    appveyor_repo_tag: true
