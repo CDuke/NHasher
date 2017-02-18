@@ -1,7 +1,6 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
-    "debugType": "portable",
     "allowUnsafe": true,
     "keyFile": "../key.snk",
     "warningsAsErrors": true,
