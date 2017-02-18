@@ -3,12 +3,13 @@ using System.Security.Cryptography;
 
 namespace NHasher
 {
+    /// <summary>
+    /// Implementation of 64 bit xxHash algoritm specified at <see href="https://github.com/Cyan4973/xxHash"/>.
+    /// </summary>
     public class XXHash64 : HashAlgorithm
     {
         private const int HashSizeBytes = 8;
         private const int BufferSize = 32;
-
-        private readonly ulong _seed;
 
         private const ulong Prime1 = 11400714785074694791UL;
         private const ulong Prime2 = 14029467366897019727UL;
@@ -16,18 +17,27 @@ namespace NHasher
         private const ulong Prime4 = 9650029242287828579UL;
         private const ulong Prime5 = 2870177450012600261UL;
 
+        private readonly ulong _seed;
+
+        private readonly byte[] _buffer;
         private ulong _length;
         private ulong _v1;
         private ulong _v2;
         private ulong _v3;
         private ulong _v4;
         private int _bufUsed;
-        private readonly byte[] _buffer;
 
-        public override int HashSize => 64;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XXHash64"/> class.
+        /// </summary>
+        public XXHash64() : this(0)
+        {
+        }
 
-        public XXHash64() : this(0) { }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XXHash64"/> class, using the specified seed value.
+        /// </summary>
+        /// <param name="seed">A number used to calculate a starting value.</param>
         public XXHash64(ulong seed)
         {
             _seed = seed;
@@ -35,6 +45,10 @@ namespace NHasher
             Reset();
         }
 
+        /// <inheritdoc cref="HashAlgorithm.HashSize"/>
+        public override int HashSize => 64;
+
+        /// <inheritdoc cref="HashAlgorithm.HashCore"/>
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
             var n = cbSize - ibStart;
@@ -85,6 +99,7 @@ namespace NHasher
             }
         }
 
+        /// <inheritdoc cref="HashAlgorithm.HashFinal"/>
         protected override unsafe byte[] HashFinal()
         {
             ulong h;
@@ -143,6 +158,9 @@ namespace NHasher
             return hash;
         }
 
+        /// <summary>
+        /// Initializes an implementation of the <see cref="XXHash64"/> class.
+        /// </summary>
         public override void Initialize()
         {
             Reset();

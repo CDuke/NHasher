@@ -3,6 +3,10 @@ using System.Security.Cryptography;
 
 namespace NHasher
 {
+
+    /// <summary>
+    /// Implementation of 32 bit xxHash algoritm specified at <see href="https://github.com/Cyan4973/xxHash"/>.
+    /// </summary>
     public class XXHash32 : HashAlgorithm
     {
         private const int HashSizeBytes = 4;
@@ -24,10 +28,20 @@ namespace NHasher
         private int _bufUsed;
         private readonly byte[] _buffer;
 
+        /// <inheritdoc cref="HashAlgorithm.HashSize"/>
         public override int HashSize => 64;
 
-        public XXHash32() : this(0) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XXHash32"/> class.
+        /// </summary>
+        public XXHash32() : this(0)
+        {
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XXHash32"/> class, using the specified seed value.
+        /// </summary>
+        /// <param name="seed">A number used to calculate a starting value.</param>
         public XXHash32(uint seed)
         {
             _seed = seed;
@@ -35,6 +49,7 @@ namespace NHasher
             Reset();
         }
 
+        /// <inheritdoc cref="HashAlgorithm.HashCore"/>
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
             var n = cbSize - ibStart;
@@ -85,6 +100,7 @@ namespace NHasher
             }
         }
 
+        /// <inheritdoc cref="HashAlgorithm.HashFinal"/>
         protected override unsafe byte[] HashFinal()
         {
             uint h;
@@ -130,6 +146,9 @@ namespace NHasher
             return hash;
         }
 
+        /// <summary>
+        /// Initializes an implementation of the <see cref="XXHash32"/> class.
+        /// </summary>
         public override void Initialize()
         {
             Reset();

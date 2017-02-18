@@ -3,10 +3,11 @@ using System.Security.Cryptography;
 
 namespace NHasher
 {
+    /// <summary>
+    /// Implementation of 128 bit MurmurHash3 hash algoritm specified at <see href="https://github.com/aappleby/smhasher"/>.
+    /// </summary>
     public class MurmurHash3X64L128 : HashAlgorithm
     {
-        // 128 bit output, 64 bit platform version
-
         private const int HashSizeBytes = 16;
         private const ulong C1 = 0x87c37b91114253d5L;
         private const ulong C2 = 0x4cf5ad432745937fL;
@@ -17,20 +18,36 @@ namespace NHasher
         private ulong _h1;
         private ulong _h2;
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MurmurHash3X64L128"/> class.
+        /// </summary>
         public MurmurHash3X64L128()
-            : this(0) { }
+            : this(0)
+        {
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MurmurHash3X64L128"/> class, using the specified seed value.
+        /// </summary>
+        /// <param name="seed">A number used to calculate a starting value.</param>
         public MurmurHash3X64L128(int seed)
             : this((ulong)seed)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MurmurHash3X64L128"/> class, using the specified seed value.
+        /// </summary>
+        /// <param name="seed">A number used to calculate a starting value.</param>
         public MurmurHash3X64L128(uint seed)
             : this((ulong)seed)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MurmurHash3X64L128"/> class, using the specified seed value.
+        /// </summary>
+        /// <param name="seed">A number used to calculate a starting value.</param>
         public MurmurHash3X64L128(ulong seed)
         {
             _seed = seed;
@@ -38,6 +55,12 @@ namespace NHasher
             _h2 = seed;
         }
 
+        /// <inheritdoc cref="HashAlgorithm.HashSize"/>
+        public override int HashSize => 128;
+
+        /// <summary>
+        /// Initializes an implementation of the <see cref="MurmurHash3X64L128"/> class.
+        /// </summary>
         public override void Initialize()
         {
             _length = 0L;
@@ -45,9 +68,9 @@ namespace NHasher
             _h2 = _seed;
         }
 
-        public override int HashSize => 128;
 
-        protected override void HashCore(byte[] bb, int ibStart, int cbSize)
+        /// <inheritdoc cref="HashAlgorithm.HashCore"/>
+        protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
             var pos = ibStart;
             var remaining = (ulong)cbSize;
@@ -55,10 +78,10 @@ namespace NHasher
             // read 128 bits, 16 bytes, 2 longs in eacy cycle
             while (remaining >= HashSizeBytes)
             {
-                var k1 = bb.GetUInt64(pos);
+                var k1 = array.GetUInt64(pos);
                 pos += 8;
 
-                var k2 = bb.GetUInt64(pos);
+                var k2 = array.GetUInt64(pos);
                 pos += 8;
 
                 _length += HashSizeBytes;
@@ -69,7 +92,9 @@ namespace NHasher
 
             // if the input MOD 16 != 0
             if (remaining > 0)
-                ProcessBytesRemaining(bb, remaining, pos);
+            {
+                ProcessBytesRemaining(array, remaining, pos);
+            }
         }
 
         private void ProcessBytesRemaining(byte[] bb, ulong remaining, int pos)
@@ -134,6 +159,7 @@ namespace NHasher
             _h2 ^= MixKey2(k2);
         }
 
+        /// <inheritdoc cref="HashAlgorithm.HashFinal"/>
         protected override unsafe byte[] HashFinal()
         {
             _h1 ^= _length;

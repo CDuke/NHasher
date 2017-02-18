@@ -4,7 +4,8 @@
     "debugType": "portable",
     "allowUnsafe": true,
     "keyFile": "../key.snk",
-    "warningsAsErrors": true
+    "warningsAsErrors": true,
+    "xmlDoc": true
   },
   "dependencies": {},
   "frameworks": {
