@@ -40,9 +40,11 @@ test_script:
 
     $targetArgs = '-targetargs: test ' + $ENV:APPVEYOR_BUILD_FOLDER + '\test\NHasher.Tests -c ' + $ENV:CONFIGURATION
 
+    $filter = '-filter:+[NHasher*]* -[NHasher.Tests]*
+
     $output = '-output:' + $resultsFile
 
-    & $openCoverConsole $target $targetArgs '-register:user' $output '-oldStyle'
+    & $openCoverConsole $target $targetArgs '-register:user' $filter $output '-oldStyle'
 
     $artifactsFolder = $ENV:APPVEYOR_BUILD_FOLDER + '\artifacts'
 
