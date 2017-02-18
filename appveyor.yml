@@ -38,7 +38,7 @@ test_script:
 
     $target = '-target:C:\Program Files\dotnet\dotnet.exe'
 
-    $targetArgs = '-targetargs: test ' + $ENV:APPVEYOR_BUILD_FOLDER + '\tests\NHasher.Tests -c ' + $ENV:CONFIGURATION
+    $targetArgs = '-targetargs: test ' + $ENV:APPVEYOR_BUILD_FOLDER + '\test\NHasher.Tests -c ' + $ENV:CONFIGURATION
 
     $output = '-output:' + $resultsFile
 
