@@ -8,7 +8,8 @@
     "System.Runtime.Serialization.Primitives": "4.3.0",
     "xunit": "2.1.0",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
-    "NHasher": "1.0.0-*"
+    "NHasher": "1.0.0-*",
+    "OpenCover": "4.6.519"
   },
   "testRunner": "xunit",
   "frameworks": {
