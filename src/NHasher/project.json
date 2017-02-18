@@ -2,7 +2,9 @@
   "version": "1.0.0-*",
   "buildOptions": {
     "debugType": "portable",
-    "allowUnsafe": true
+    "allowUnsafe": true,
+    "keyFile": "../key.snk",
+    "warningsAsErrors": true
   },
   "dependencies": {},
   "frameworks": {
@@ -13,7 +15,14 @@
     }
   },
   "packOptions": {
+    "summary": "Implementation of different hash algoritms",
     "licenseUrl": "https://github.com/CDuke/NHasher/LICENSE.txt",
     "projectUrl": "https://github.com/CDuke/NHasher/",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/CDuke/NHasher"
+    },
+    "tags": [ "hash" ],
+    "owners": [ "Denis Kulikov" ]
   }
 }
