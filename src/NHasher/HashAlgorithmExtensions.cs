@@ -49,18 +49,18 @@ namespace NHasher
         private static string HashToString(byte[] hash)
         {
             var length1 = hash.Length * 2;
-            var chArray = new char[length1];
+            var charHashArray = new char[length1];
             var num1 = 0;
             var index = 0;
             while (index < length1)
             {
                 var num2 = hash[num1++];
-                chArray[index] = GetHexValue(num2 / 16);
-                chArray[index + 1] = GetHexValue(num2 % 16);
+                charHashArray[index] = GetHexValue(num2 / 16);
+                charHashArray[index + 1] = GetHexValue(num2 % 16);
                 index += 2;
             }
 
-            return new string(chArray, 0, length1);
+            return new string(charHashArray, 0, length1);
         }
 
         private static char GetHexValue(int i)

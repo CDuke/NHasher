@@ -5,9 +5,15 @@
     "allowUnsafe": true,
     "keyFile": "../key.snk",
     "warningsAsErrors": true,
+    "additionalArguments": [ "/ruleset:../../StyleCop.Analyzers.ruleset", "/additionalfile:../../stylecop.json" ],
     "xmlDoc": true
   },
-  "dependencies": {},
+  "dependencies": {
+    "StyleCop.Analyzers": {
+      "type": "build",
+      "version": "1.0.0"
+    }
+  },
   "frameworks": {
     "netstandard1.3": {
       "dependencies": {

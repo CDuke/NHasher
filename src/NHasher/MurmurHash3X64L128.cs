@@ -68,7 +68,6 @@ namespace NHasher
             _h2 = _seed;
         }
 
-
         /// <inheritdoc cref="HashAlgorithm.HashCore"/>
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
@@ -95,6 +94,31 @@ namespace NHasher
             {
                 ProcessBytesRemaining(array, remaining, pos);
             }
+        }
+
+        /// <inheritdoc cref="HashAlgorithm.HashFinal"/>
+        protected override unsafe byte[] HashFinal()
+        {
+            _h1 ^= _length;
+            _h2 ^= _length;
+
+            _h1 += _h2;
+            _h2 += _h1;
+
+            _h1 = MixFinal(_h1);
+            _h2 = MixFinal(_h2);
+
+            _h1 += _h2;
+            _h2 += _h1;
+
+            var hash = new byte[HashSizeBytes];
+            fixed (byte* b = &hash[0])
+            {
+                *((ulong*)b) = _h1;
+                *((ulong*)(b + 8)) = _h2;
+            }
+
+            return hash;
         }
 
         private void ProcessBytesRemaining(byte[] bb, ulong remaining, int pos)
@@ -159,44 +183,19 @@ namespace NHasher
             _h2 ^= MixKey2(k2);
         }
 
-        /// <inheritdoc cref="HashAlgorithm.HashFinal"/>
-        protected override unsafe byte[] HashFinal()
-        {
-            _h1 ^= _length;
-            _h2 ^= _length;
-
-            _h1 += _h2;
-            _h2 += _h1;
-
-            _h1 = MixFinal(_h1);
-            _h2 = MixFinal(_h2);
-
-            _h1 += _h2;
-            _h2 += _h1;
-
-            var hash = new byte[HashSizeBytes];
-            fixed (byte* b = &hash[0])
-            {
-                *((ulong*)b) = _h1;
-                *((ulong*)(b + 8)) = _h2;
-            }
-
-            return hash;
-        }
-
         private void MixBody(ulong k1, ulong k2)
         {
             _h1 ^= MixKey1(k1);
 
             _h1 = _h1.RotateLeft(27);
             _h1 += _h2;
-            _h1 = _h1 * 5 + 0x52dce729;
+            _h1 = (_h1 * 5) + 0x52dce729;
 
             _h2 ^= MixKey2(k2);
 
             _h2 = _h2.RotateLeft(31);
             _h2 += _h1;
-            _h2 = _h2 * 5 + 0x38495ab5;
+            _h2 = (_h2 * 5) + 0x38495ab5;
         }
 
         private static ulong MixKey1(ulong k1)

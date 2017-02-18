@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 
 namespace NHasher
 {
-
     /// <summary>
     /// Implementation of 32 bit xxHash algoritm specified at <see href="https://github.com/Cyan4973/xxHash"/>.
     /// </summary>
@@ -12,29 +11,27 @@ namespace NHasher
         private const int HashSizeBytes = 4;
         private const int BufferSize = 16;
 
-        private readonly uint _seed;
-
         private const uint Prime1 = 2654435761U;
         private const uint Prime2 = 2246822519U;
         private const uint Prime3 = 3266489917U;
         private const uint Prime4 = 668265263U;
         private const uint Prime5 = 374761393U;
 
+        private readonly uint _seed;
+
+        private readonly byte[] _buffer;
         private uint _length;
         private uint _v1;
         private uint _v2;
         private uint _v3;
         private uint _v4;
         private int _bufUsed;
-        private readonly byte[] _buffer;
-
-        /// <inheritdoc cref="HashAlgorithm.HashSize"/>
-        public override int HashSize => 64;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XXHash32"/> class.
         /// </summary>
-        public XXHash32() : this(0)
+        public XXHash32()
+            : this(0)
         {
         }
 
@@ -46,6 +43,17 @@ namespace NHasher
         {
             _seed = seed;
             _buffer = new byte[BufferSize];
+            Reset();
+        }
+
+        /// <inheritdoc cref="HashAlgorithm.HashSize"/>
+        public override int HashSize => 64;
+
+        /// <summary>
+        /// Initializes an implementation of the <see cref="XXHash32"/> class.
+        /// </summary>
+        public override void Initialize()
+        {
             Reset();
         }
 
@@ -89,7 +97,8 @@ namespace NHasher
                     p += 4;
                     _v4 = Round(_v4, array, p);
                     p += 4;
-                } while (p <= limit);
+                }
+                while (p <= limit);
             }
 
             var tailLength = n - p;
@@ -144,14 +153,6 @@ namespace NHasher
             }
 
             return hash;
-        }
-
-        /// <summary>
-        /// Initializes an implementation of the <see cref="XXHash32"/> class.
-        /// </summary>
-        public override void Initialize()
-        {
-            Reset();
         }
 
         private void Reset()

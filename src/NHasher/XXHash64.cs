@@ -30,7 +30,8 @@ namespace NHasher
         /// <summary>
         /// Initializes a new instance of the <see cref="XXHash64"/> class.
         /// </summary>
-        public XXHash64() : this(0)
+        public XXHash64()
+            : this(0)
         {
         }
 
@@ -47,6 +48,14 @@ namespace NHasher
 
         /// <inheritdoc cref="HashAlgorithm.HashSize"/>
         public override int HashSize => 64;
+
+        /// <summary>
+        /// Initializes an implementation of the <see cref="XXHash64"/> class.
+        /// </summary>
+        public override void Initialize()
+        {
+            Reset();
+        }
 
         /// <inheritdoc cref="HashAlgorithm.HashCore"/>
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
@@ -88,7 +97,8 @@ namespace NHasher
                     p += 8;
                     _v4 = Round(_v4, array, p);
                     p += 8;
-                } while (p <= limit);
+                }
+                while (p <= limit);
             }
 
             var tailLength = n - p;
@@ -124,7 +134,7 @@ namespace NHasher
             {
                 var k1 = Round(0, _buffer, p);
                 h ^= k1;
-                h = h.RotateLeft(27) * Prime1 + Prime4;
+                h = (h.RotateLeft(27) * Prime1) + Prime4;
                 p += 8;
             }
 
@@ -132,7 +142,7 @@ namespace NHasher
             {
                 h ^= _buffer.GetUInt32(p) * Prime1;
 
-                h = h.RotateLeft(23) * Prime2 + Prime3;
+                h = (h.RotateLeft(23) * Prime2) + Prime3;
                 p += 4;
             }
 
@@ -158,14 +168,6 @@ namespace NHasher
             return hash;
         }
 
-        /// <summary>
-        /// Initializes an implementation of the <see cref="XXHash64"/> class.
-        /// </summary>
-        public override void Initialize()
-        {
-            Reset();
-        }
-
         private void Reset()
         {
             _length = 0L;
@@ -182,12 +184,11 @@ namespace NHasher
             return Round(acc, input);
         }
 
-
         private static ulong MergeRound(ulong acc, ulong val)
         {
             val = Round(0, val);
             acc ^= val;
-            acc = acc * Prime1 + Prime4;
+            acc = (acc * Prime1) + Prime4;
             return acc;
         }
 
