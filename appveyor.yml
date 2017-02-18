@@ -33,17 +33,27 @@ after_build:
 test_script:
 - ps: >-
     $resultsFile = $ENV:APPVEYOR_BUILD_FOLDER + '\results.xml'
+
     $openCoverConsole = $ENV:USERPROFILE + '\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe'
+
     $target = '-target:C:\Program Files\dotnet\dotnet.exe'
+
     $targetArgs = '-targetargs: test ' + $ENV:APPVEYOR_BUILD_FOLDER + '\tests\NHasher.Tests -c ' + $ENV:CONFIGURATION
+
     $output = '-output:' + $resultsFile
+
     & $openCoverConsole $target $targetArgs '-register:user' $output '-oldStyle'
 
     $artifactsFolder = $ENV:APPVEYOR_BUILD_FOLDER + '\artifacts'
+
     Copy-Item $resultsFile $artifactsFolder
+
     $ENV:PATH = 'C:\\Python34;C:\\Python34\\Scripts;' + $ENV:PATH
+
     python -m pip install --upgrade pip
+
     pip install git+git://github.com/codecov/codecov-python.git
+
     codecov -f $resultsFile -X gcov
 
 artifacts:
