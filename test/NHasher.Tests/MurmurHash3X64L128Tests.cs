@@ -41,6 +41,14 @@ namespace NHasher.Tests
             }
         }
 
+        [Fact]
+        public void CheckHashSize()
+        {
+            using (var hash = new MurmurHash3X64L128())
+            {
+                Assert.Equal(128, hash.HashSize);
+            }
+        }
         private static byte[] StringToBytes(string s)
         {
             return Encoding.UTF8.GetBytes(s);
