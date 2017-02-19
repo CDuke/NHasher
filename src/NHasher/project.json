@@ -1,5 +1,6 @@
 {
   "version": "1.0.0-*",
+  "authors": [ "Denis Kulikov" ],
   "buildOptions": {
     "allowUnsafe": true,
     "warningsAsErrors": true,
@@ -12,7 +13,7 @@
         "define": [ "DEBUG", "TRACE" ]
       }
     },
-    "Release" : {
+    "Release": {
       "buildOptions": {
         "define": [ "RELEASE", "TRACE" ],
         "optimize": true,
@@ -32,7 +33,12 @@
       "dependencies": {
         "NETStandard.Library": "1.6.1"
       }
-    }
+    },
+    "net45": {
+      "buildOptions": {
+        "define": [ "CLASSIC" ]
+      }
+    } 
   },
   "packOptions": {
     "summary": "Implementation of different hash algoritms",
