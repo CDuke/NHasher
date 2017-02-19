@@ -23,6 +23,8 @@ namespace NHasher.Tests
         [InlineData(0x0, "THE QUICK BROWN FOX JUMPS OVER THE LAZY COG", "24B0E694C86C766A6C8FD44492BB010B")]
         [InlineData(0x0, "the quick brown fox jumps over the lazy dog", "B386ADE2FEE9E4BC7F4B6E4074E3E20A")]
         [InlineData(0x0, "the quick brown fox jumps over the lazy cog", "3222507256FE092F24D124BB1E8D7586")]
+        [InlineData(0x0, "aaaaaaa", "6544D6CA1C953EC79A1A796064A35DA7")]
+        [InlineData(0x0, "aaaaaaaaaaaaaaa", "BC7F2EFDDBA8077D59F95FA84A04A88F")]
 
         [InlineData(0xc58f1a7b, "", "6E4718DF51C270B92DAD702FF62D055F")]
         [InlineData(0xc58f1a7b, "The quick brown fox jumps over the lazy dog", "FF9D0CD2EE401FAC26F5EFDE525C9338")]
