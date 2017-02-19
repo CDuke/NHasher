@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
 namespace NHasher
@@ -178,12 +179,14 @@ namespace NHasher
             _bufUsed = 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ulong Round(ulong acc, byte[] buffer, int position)
         {
             var input = buffer.GetUInt64(position);
             return Round(acc, input);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ulong MergeRound(ulong acc, ulong val)
         {
             val = Round(0, val);
@@ -192,6 +195,7 @@ namespace NHasher
             return acc;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ulong Round(ulong acc, ulong input)
         {
             acc += input * Prime2;

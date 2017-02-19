@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
 namespace NHasher
@@ -165,12 +166,14 @@ namespace NHasher
             _bufUsed = 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static uint Round(uint acc, byte[] buffer, int position)
         {
             var input = buffer.GetUInt32(position);
             return Round(acc, input);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static uint Round(uint acc, uint input)
         {
             acc += input * Prime2;

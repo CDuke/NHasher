@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
 namespace NHasher
@@ -183,6 +184,7 @@ namespace NHasher
             _h2 ^= MixKey2(k2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void MixBody(ulong k1, ulong k2)
         {
             _h1 ^= MixKey1(k1);
@@ -198,6 +200,7 @@ namespace NHasher
             _h2 = (_h2 * 5) + 0x38495ab5;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ulong MixKey1(ulong k1)
         {
             k1 *= C1;
@@ -206,6 +209,7 @@ namespace NHasher
             return k1;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ulong MixKey2(ulong k2)
         {
             k2 *= C2;
@@ -214,6 +218,7 @@ namespace NHasher
             return k2;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ulong MixFinal(ulong k)
         {
             // avalanche bits
