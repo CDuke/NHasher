@@ -2,10 +2,24 @@
   "version": "1.0.0-*",
   "buildOptions": {
     "allowUnsafe": true,
-    "keyFile": "../key.snk",
     "warningsAsErrors": true,
     "additionalArguments": [ "/ruleset:../../StyleCop.Analyzers.ruleset", "/additionalfile:../../stylecop.json" ],
     "xmlDoc": true
+  },
+  "configurations": {
+    "Debug": {
+      "buildOptions": {
+        "define": [ "DEBUG", "TRACE" ]
+      }
+    },
+    "Release" : {
+      "buildOptions": {
+        "define": [ "RELEASE", "TRACE" ],
+        "optimize": true,
+        "keyFile": "../key.snk",
+        "strongName": true
+      }
+    }
   },
   "dependencies": {
     "StyleCop.Analyzers": {
