@@ -1,0 +1,43 @@
+{
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+  "configurations": {
+    "Debug": {
+      "buildOptions": {
+        "define": [ "DEBUG", "TRACE" ]
+      }
+    },
+    "Release": {
+      "buildOptions": {
+        "define": [ "RELEASE", "TRACE" ],
+        "optimize": true
+      }
+    }
+  },
+  "dependencies": {
+    "BenchmarkDotNet": "0.10.2",
+    "NHasher": "1.0.0-*"
+  },
+  "frameworks": {
+    "netcoreapp1.1": {
+      "buildOptions": {
+        "define": [ "CORE" ]
+      },
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.1.0"
+        }
+      }
+    },
+    "net45": {
+      "buildOptions": {
+        "define": [ "CLASSIC" ]
+      },
+      "frameworkAssemblies": {
+        "System.Reflection": "4.0.0.0"
+      }
+    }
+  }
+}
