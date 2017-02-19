@@ -6,7 +6,7 @@ namespace NHasher
     /// <summary>
     /// Implementation of 32 bit xxHash algoritm specified at <see href="https://github.com/Cyan4973/xxHash"/>.
     /// </summary>
-    public class XXHash32 : HashAlgorithm
+    public sealed class XXHash32 : HashAlgorithm
     {
         private const int HashSizeBytes = 4;
         private const int BufferSize = 16;

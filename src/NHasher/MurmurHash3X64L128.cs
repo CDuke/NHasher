@@ -6,7 +6,7 @@ namespace NHasher
     /// <summary>
     /// Implementation of 128 bit MurmurHash3 hash algoritm specified at <see href="https://github.com/aappleby/smhasher"/>.
     /// </summary>
-    public class MurmurHash3X64L128 : HashAlgorithm
+    public sealed class MurmurHash3X64L128 : HashAlgorithm
     {
         private const int HashSizeBytes = 16;
         private const ulong C1 = 0x87c37b91114253d5L;

@@ -6,7 +6,7 @@ namespace NHasher
     /// <summary>
     /// Implementation of 64 bit xxHash algoritm specified at <see href="https://github.com/Cyan4973/xxHash"/>.
     /// </summary>
-    public class XXHash64 : HashAlgorithm
+    public sealed class XXHash64 : HashAlgorithm
     {
         private const int HashSizeBytes = 8;
         private const int BufferSize = 32;
