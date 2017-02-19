@@ -46,6 +46,11 @@ namespace NHasher
             return HashToString(hash);
         }
 
+        /// <summary>
+        /// Converts the numeric value of each element of a specified array of bytes to its equivalent hexadecimal string representation.
+        /// </summary>
+        /// <param name="hash">An array of bytes.</param>
+        /// <returns>hexadecimal string representation; for example, "7F2C4A00".</returns>
         private static string HashToString(byte[] hash)
         {
             var length1 = hash.Length * 2;
