@@ -74,26 +74,87 @@ namespace NHasher
         {
             var pos = ibStart;
             var remaining = (ulong)cbSize;
+            _length += remaining;
 
-            // read 128 bits, 16 bytes, 2 longs in eacy cycle
             while (remaining >= HashSizeBytes)
             {
                 var k1 = array.GetUInt64(pos);
-                pos += 8;
+                var k2 = array.GetUInt64(pos + 8);
 
-                var k2 = array.GetUInt64(pos);
-                pos += 8;
-
-                _length += HashSizeBytes;
+                pos += 16;
                 remaining -= HashSizeBytes;
 
-                MixBody(k1, k2);
+                _h1 ^= MixKey1(k1);
+                _h1 = _h1.RotateLeft(27);
+                _h1 += _h2;
+                _h1 = (_h1 * 5) + 0x52dce729;
+
+                _h2 ^= MixKey2(k2);
+                _h2 = _h2.RotateLeft(31);
+                _h2 += _h1;
+                _h2 = (_h2 * 5) + 0x38495ab5;
             }
 
             // if the input MOD 16 != 0
             if (remaining > 0)
             {
-                ProcessBytesRemaining(array, remaining, pos);
+                ulong k1 = 0;
+                ulong k2 = 0;
+
+                // little endian (x86) processing
+                switch (remaining)
+                {
+                    case 15:
+                        k2 ^= (ulong)array[pos + 14] << 48; // fall through
+                        goto case 14;
+                    case 14:
+                        k2 ^= (ulong)array[pos + 13] << 40; // fall through
+                        goto case 13;
+                    case 13:
+                        k2 ^= (ulong)array[pos + 12] << 32; // fall through
+                        goto case 12;
+                    case 12:
+                        k2 ^= (ulong)array[pos + 11] << 24; // fall through
+                        goto case 11;
+                    case 11:
+                        k2 ^= (ulong)array[pos + 10] << 16; // fall through
+                        goto case 10;
+                    case 10:
+                        k2 ^= (ulong)array[pos + 9] << 8; // fall through
+                        goto case 9;
+                    case 9:
+                        k2 ^= (ulong)array[pos + 8]; // fall through
+                        goto case 8;
+                    case 8:
+                        k1 ^= array.GetUInt64(pos);
+                        break;
+                    case 7:
+                        k1 ^= (ulong)array[pos + 6] << 48; // fall through
+                        goto case 6;
+                    case 6:
+                        k1 ^= (ulong)array[pos + 5] << 40; // fall through
+                        goto case 5;
+                    case 5:
+                        k1 ^= (ulong)array[pos + 4] << 32; // fall through
+                        goto case 4;
+                    case 4:
+                        k1 ^= (ulong)array[pos + 3] << 24; // fall through
+                        goto case 3;
+                    case 3:
+                        k1 ^= (ulong)array[pos + 2] << 16; // fall through
+                        goto case 2;
+                    case 2:
+                        k1 ^= (ulong)array[pos + 1] << 8; // fall through
+                        goto case 1;
+                    case 1:
+                        k1 ^= (ulong)array[pos]; // fall through
+                        break;
+                    default:
+                        throw new Exception("Something went wrong with remaining bytes calculation.");
+                }
+
+                _h1 ^= MixKey1(k1);
+                _h2 ^= MixKey2(k2);
             }
         }
 
@@ -120,84 +181,6 @@ namespace NHasher
             }
 
             return hash;
-        }
-
-        private void ProcessBytesRemaining(byte[] bb, ulong remaining, int pos)
-        {
-            ulong k1 = 0;
-            ulong k2 = 0;
-            _length += remaining;
-
-            // little endian (x86) processing
-            switch (remaining)
-            {
-                case 15:
-                    k2 ^= (ulong)bb[pos + 14] << 48; // fall through
-                    goto case 14;
-                case 14:
-                    k2 ^= (ulong)bb[pos + 13] << 40; // fall through
-                    goto case 13;
-                case 13:
-                    k2 ^= (ulong)bb[pos + 12] << 32; // fall through
-                    goto case 12;
-                case 12:
-                    k2 ^= (ulong)bb[pos + 11] << 24; // fall through
-                    goto case 11;
-                case 11:
-                    k2 ^= (ulong)bb[pos + 10] << 16; // fall through
-                    goto case 10;
-                case 10:
-                    k2 ^= (ulong)bb[pos + 9] << 8; // fall through
-                    goto case 9;
-                case 9:
-                    k2 ^= (ulong)bb[pos + 8]; // fall through
-                    goto case 8;
-                case 8:
-                    k1 ^= bb.GetUInt64(pos);
-                    break;
-                case 7:
-                    k1 ^= (ulong)bb[pos + 6] << 48; // fall through
-                    goto case 6;
-                case 6:
-                    k1 ^= (ulong)bb[pos + 5] << 40; // fall through
-                    goto case 5;
-                case 5:
-                    k1 ^= (ulong)bb[pos + 4] << 32; // fall through
-                    goto case 4;
-                case 4:
-                    k1 ^= (ulong)bb[pos + 3] << 24; // fall through
-                    goto case 3;
-                case 3:
-                    k1 ^= (ulong)bb[pos + 2] << 16; // fall through
-                    goto case 2;
-                case 2:
-                    k1 ^= (ulong)bb[pos + 1] << 8; // fall through
-                    goto case 1;
-                case 1:
-                    k1 ^= (ulong)bb[pos]; // fall through
-                    break;
-                default:
-                    throw new Exception("Something went wrong with remaining bytes calculation.");
-            }
-
-            _h1 ^= MixKey1(k1);
-            _h2 ^= MixKey2(k2);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void MixBody(ulong k1, ulong k2)
-        {
-            _h1 ^= MixKey1(k1);
-
-            _h1 = _h1.RotateLeft(27);
-            _h1 += _h2;
-            _h1 = (_h1 * 5) + 0x52dce729;
-
-            _h2 ^= MixKey2(k2);
-
-            _h2 = _h2.RotateLeft(31);
-            _h2 += _h1;
-            _h2 = (_h2 * 5) + 0x38495ab5;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
