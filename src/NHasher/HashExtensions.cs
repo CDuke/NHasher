@@ -27,6 +27,13 @@ namespace NHasher
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static unsafe ulong GetUInt64(byte* data, int position)
+        {
+            // we only read aligned longs, so a simple casting is enough
+            return *((ulong*)&data[position]);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static unsafe uint GetUInt32(this byte[] data, int position)
         {
             // we only read aligned longs, so a simple casting is enough
