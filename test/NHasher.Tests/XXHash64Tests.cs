@@ -40,6 +40,15 @@ namespace NHasher.Tests
             }
         }
 
+        [Fact]
+        public void CheckHashSize()
+        {
+            using (var hash = new XXHash64())
+            {
+                Assert.Equal(64, hash.HashSize);
+            }
+        }
+
         private static byte[] StringToBytes(string s)
         {
             return Encoding.UTF8.GetBytes(s);
