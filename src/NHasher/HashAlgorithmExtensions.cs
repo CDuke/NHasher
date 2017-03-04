@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace NHasher
@@ -18,6 +19,18 @@ namespace NHasher
         {
             var hash = hashAlgorithm.ComputeHash(buffer);
             return HashToString(hash);
+        }
+
+        /// <summary>
+        /// Compute the hash value for the specified byte array and return int 32 representation.
+        /// </summary>
+        /// <param name="hashAlgorithm"><see cref="HashAlgorithm"/> instance.</param>
+        /// <param name="buffer">The input to compute the hash code for.</param>
+        /// <returns>Int 32 representation.</returns>
+        public static uint ComputeHashAsUInt32(this HashAlgorithm hashAlgorithm, byte[] buffer)
+        {
+            var hash = hashAlgorithm.ComputeHash(buffer);
+            return HastToUInt32(hash);
         }
 
         /// <summary>
@@ -76,6 +89,11 @@ namespace NHasher
             }
 
             return (char)(i - 10 + 65);
+        }
+
+        private static uint HastToUInt32(byte[] hash)
+        {
+            return BitConverter.ToUInt32(hash, 0);
         }
     }
 }
