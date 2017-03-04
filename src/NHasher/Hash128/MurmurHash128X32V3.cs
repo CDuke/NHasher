@@ -57,7 +57,7 @@ namespace NHasher
         public override int HashSize => 128;
 
         /// <summary>
-        /// Initializes an implementation of the <see cref="MurmurHash128X64V3"/> class.
+        /// Initializes an implementation of the <see cref="MurmurHash128X32V3"/> class.
         /// </summary>
         public override void Initialize()
         {
