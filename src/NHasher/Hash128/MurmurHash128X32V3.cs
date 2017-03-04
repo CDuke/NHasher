@@ -179,7 +179,7 @@ namespace NHasher
         }
 
         /// <inheritdoc cref="HashAlgorithm.HashFinal"/>
-        protected override unsafe byte[] HashFinal()
+        protected override byte[] HashFinal()
         {
             _h1 ^= _length;
             _h2 ^= _length;
@@ -201,16 +201,19 @@ namespace NHasher
             _h3 += _h1;
             _h4 += _h1;
 
-            var hash = new byte[HashSizeBytes];
-            fixed (byte* b = hash)
+            unsafe
             {
-                *((uint*)b) = _h1;
-                *((uint*)(b + 4)) = _h2;
-                *((uint*)(b + 8)) = _h3;
-                *((uint*)(b + 12)) = _h4;
-            }
+                var hash = new byte[HashSizeBytes];
+                fixed (byte* b = hash)
+                {
+                    *((uint*)b) = _h1;
+                    *((uint*)(b + 4)) = _h2;
+                    *((uint*)(b + 8)) = _h3;
+                    *((uint*)(b + 12)) = _h4;
+                }
 
-            return hash;
+                return hash;
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

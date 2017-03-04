@@ -111,7 +111,7 @@ namespace NHasher
         }
 
         /// <inheritdoc cref="HashAlgorithm.HashFinal"/>
-        protected override unsafe byte[] HashFinal()
+        protected override byte[] HashFinal()
         {
             ulong h;
 
@@ -160,13 +160,16 @@ namespace NHasher
             h *= Prime3;
             h ^= h >> 32;
 
-            var hash = new byte[HashSizeBytes];
-            fixed (byte* b = &hash[0])
+            unsafe
             {
-                *((ulong*)b) = h;
-            }
+                var hash = new byte[HashSizeBytes];
+                fixed (byte* b = &hash[0])
+                {
+                    *((ulong*)b) = h;
+                }
 
-            return hash;
+                return hash;
+            }
         }
 
         private void Reset()

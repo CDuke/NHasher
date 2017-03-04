@@ -107,19 +107,22 @@ namespace NHasher
         }
 
         /// <inheritdoc cref="HashAlgorithm.HashFinal"/>
-        protected override unsafe byte[] HashFinal()
+        protected override byte[] HashFinal()
         {
             _h1 ^= _length;
 
             _h1 = MixFinal(_h1);
 
-            var hash = new byte[HashSizeBytes];
-            fixed (byte* b = hash)
+            unsafe
             {
-                *((uint*)b) = _h1;
-            }
+                var hash = new byte[HashSizeBytes];
+                fixed (byte* b = hash)
+                {
+                    *((uint*)b) = _h1;
+                }
 
-            return hash;
+                return hash;
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
