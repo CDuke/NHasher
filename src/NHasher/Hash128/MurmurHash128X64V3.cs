@@ -7,7 +7,7 @@ namespace NHasher
     /// <summary>
     /// Implementation of 128 bit MurmurHash3 hash algoritm specified at <see href="https://github.com/aappleby/smhasher"/>.
     /// </summary>
-    public sealed class MurmurHash3X64L128 : HashAlgorithm
+    public sealed class MurmurHash128X64V3 : HashAlgorithm
     {
         private const int HashSizeBytes = 16;
         private const ulong C1 = 0x87c37b91114253d5L;
@@ -20,36 +20,36 @@ namespace NHasher
         private ulong _h2;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MurmurHash3X64L128"/> class.
+        /// Initializes a new instance of the <see cref="MurmurHash128X64V3"/> class.
         /// </summary>
-        public MurmurHash3X64L128()
+        public MurmurHash128X64V3()
             : this(0)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MurmurHash3X64L128"/> class, using the specified seed value.
+        /// Initializes a new instance of the <see cref="MurmurHash128X64V3"/> class, using the specified seed value.
         /// </summary>
         /// <param name="seed">A number used to calculate a starting value.</param>
-        public MurmurHash3X64L128(int seed)
+        public MurmurHash128X64V3(int seed)
             : this((ulong)seed)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MurmurHash3X64L128"/> class, using the specified seed value.
+        /// Initializes a new instance of the <see cref="MurmurHash128X64V3"/> class, using the specified seed value.
         /// </summary>
         /// <param name="seed">A number used to calculate a starting value.</param>
-        public MurmurHash3X64L128(uint seed)
+        public MurmurHash128X64V3(uint seed)
             : this((ulong)seed)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MurmurHash3X64L128"/> class, using the specified seed value.
+        /// Initializes a new instance of the <see cref="MurmurHash128X64V3"/> class, using the specified seed value.
         /// </summary>
         /// <param name="seed">A number used to calculate a starting value.</param>
-        public MurmurHash3X64L128(ulong seed)
+        public MurmurHash128X64V3(ulong seed)
         {
             _seed = seed;
             _h1 = seed;
@@ -60,7 +60,7 @@ namespace NHasher
         public override int HashSize => 128;
 
         /// <summary>
-        /// Initializes an implementation of the <see cref="MurmurHash3X64L128"/> class.
+        /// Initializes an implementation of the <see cref="MurmurHash128X64V3"/> class.
         /// </summary>
         public override void Initialize()
         {

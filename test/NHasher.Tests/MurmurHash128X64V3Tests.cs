@@ -3,7 +3,7 @@ using Xunit;
 
 namespace NHasher.Tests
 {
-    public class MurmurHash3X64L128Tests
+    public class MurmurHash128X64V3Tests
     {
 
         [Theory]
@@ -35,7 +35,7 @@ namespace NHasher.Tests
         [InlineData(0xc58f1a7b, "the quick brown fox jumps over the lazy cog", "48517672B6B419924084009F9F6D7381")]
         public void CheckHashes(uint seed, string input, string expectedHash)
         {
-            using (var hasher = new MurmurHash3X64L128(seed))
+            using (var hasher = new MurmurHash128X64V3(seed))
             {
                 var buffer = StringToBytes(input);
                 var hash = hasher.ComputeHashAsString(buffer);
@@ -46,7 +46,7 @@ namespace NHasher.Tests
         [Fact]
         public void CheckHashSize()
         {
-            using (var hash = new MurmurHash3X64L128())
+            using (var hash = new MurmurHash128X64V3())
             {
                 Assert.Equal(128, hash.HashSize);
             }

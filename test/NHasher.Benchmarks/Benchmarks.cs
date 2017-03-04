@@ -10,7 +10,7 @@ namespace NHasher.Benchmarks
     {
         private byte[] _data;
 
-        private readonly MurmurHash3X64L128 _murmurHash3X64L128 = new MurmurHash3X64L128();
+        private readonly MurmurHash128X64V3 _murmurHash128X64V3 = new MurmurHash128X64V3();
         private readonly XXHash32 _xxHash32 = new XXHash32();
         private readonly XXHash64 _xxHash64 = new XXHash64();
 
@@ -25,7 +25,7 @@ namespace NHasher.Benchmarks
         }
 
         [Benchmark]
-        public byte[] MurmurHash3X64L128() => _murmurHash3X64L128.ComputeHash(_data);
+        public byte[] MurmurHash3X64L128() => _murmurHash128X64V3.ComputeHash(_data);
 
         [Benchmark]
         public byte[] XXHash32() => _xxHash32.ComputeHash(_data);
