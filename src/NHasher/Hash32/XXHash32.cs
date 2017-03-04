@@ -48,7 +48,7 @@ namespace NHasher
         }
 
         /// <inheritdoc cref="HashAlgorithm.HashSize"/>
-        public override int HashSize => 64;
+        public override int HashSize => 32;
 
         /// <summary>
         /// Initializes an implementation of the <see cref="XXHash32"/> class.

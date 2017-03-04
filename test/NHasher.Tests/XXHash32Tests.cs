@@ -18,6 +18,15 @@ namespace NHasher.Tests
             }
         }
 
+        [Fact]
+        public void CheckHashSize()
+        {
+            using (var hash = new XXHash32())
+            {
+                Assert.Equal(32, hash.HashSize);
+            }
+        }
+
         private static IEnumerable<object[]> GetTestData()
         {
             const uint prime = 2654435761;
