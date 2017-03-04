@@ -5,7 +5,6 @@ namespace NHasher.Tests
 {
     public class MurmurHash128X64V3Tests
     {
-
         [Theory]
 
         [InlineData(2538058380, "", "B3BBAA1D8A202B397A9502E38F60B093")]
