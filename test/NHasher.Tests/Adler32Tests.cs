@@ -76,15 +76,6 @@ namespace NHasher.Tests
                 new object[] { 0x91dd304f, "The fugacity of a constituent in a mixture of gases at a given temperature is proportional to its mole fraction.  Lewis-Randall Rule" },
                 new object[] { 0x2e5d1316, "How can you write a big system without C++?  -Paul Glick" },
                 new object[] { 0xd0201df6, "'Invariant assertions' is the most elegant programming technique!  -Tom Szymanski" },
-                //new object[] { 0x211297c8, Encoding.UTF8.GetString(Enumerable.Range(0, 5548).Select( _ => (byte)255).ToArray()) + "8" },
-                /*new object[] { 0x211297c8, new string('\xff', 5548) + "8" },
-                new object[] { 0xbaa198c8, new string('\xff', 5549) + "9" },
-                new object[] { 0x553499be, new string('\xff', 5550) + "0" },
-                new object[] { 0xf0c19abe, new string('\xff', 5551) + "1" },
-                new object[] { 0x8d5c9bbe, new string('\xff', 5552) + "2" },
-                new object[] { 0x2af69cbe, new string('\xff', 5553) + "3" },
-                new object[] { 0xc9809dbe, new string('\xff', 5554) + "4" },
-                new object[] { 0x69189ebe, new string('\xff', 5555) + "5" },*/
                 new object[] { 0x86af0001, new string('\x00', (int)Math.Pow(10, 5)) },
                 new object[] { 0x79660b4d, new string('a', (int)Math.Pow(10, 5)) },
                 new object[] { 0x110588ee, CreateString("ABCDEFGHIJKLMNOPQRSTUVWXYZ", (int)Math.Pow(10, 4)) },
@@ -114,7 +105,7 @@ namespace NHasher.Tests
         private static string CreateString(string s, int count)
         {
             var sb = new StringBuilder(s.Length * count);
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 sb.Append(s);
             }
