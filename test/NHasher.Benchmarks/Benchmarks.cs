@@ -16,6 +16,8 @@ namespace NHasher.Benchmarks
         private readonly XXHash32 _xxHash32 = new XXHash32();
         private readonly XXHash64 _xxHash64 = new XXHash64();
         private readonly Adler32 _adler32 = new Adler32();
+        private readonly Fnv32 _fnv32 = new Fnv32();
+        private readonly Fnv64 _fnv64 = new Fnv64();
 
         [Params(4, 11, 25, 100, 1000, 10000)]
         public int PayloadLength { get; set; }
@@ -44,5 +46,11 @@ namespace NHasher.Benchmarks
 
         [Benchmark]
         public byte[] Adler32() => _adler32.ComputeHash(_data);
+
+        [Benchmark]
+        public byte[] Fnv32() => _fnv32.ComputeHash(_data);
+
+        [Benchmark]
+        public byte[] Fnv64() => _fnv64.ComputeHash(_data);
     }
 }
