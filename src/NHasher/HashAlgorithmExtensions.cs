@@ -34,6 +34,18 @@ namespace NHasher
         }
 
         /// <summary>
+        /// Compute the hash value for the specified byte array and return int 64 representation.
+        /// </summary>
+        /// <param name="hashAlgorithm"><see cref="HashAlgorithm"/> instance.</param>
+        /// <param name="buffer">The input to compute the hash code for.</param>
+        /// <returns>Int 64 representation.</returns>
+        public static ulong ComputeHashAsUInt64(this HashAlgorithm hashAlgorithm, byte[] buffer)
+        {
+            var hash = hashAlgorithm.ComputeHash(buffer);
+            return HastToUInt64(hash);
+        }
+
+        /// <summary>
         /// Computes the hash value for the specified <see cref="Stream"/> object and return string hash representation.
         /// </summary>
         /// <param name="hashAlgorithm"><see cref="HashAlgorithm"/> instance.</param>
@@ -94,6 +106,11 @@ namespace NHasher
         private static uint HastToUInt32(byte[] hash)
         {
             return BitConverter.ToUInt32(hash, 0);
+        }
+
+        private static ulong HastToUInt64(byte[] hash)
+        {
+            return BitConverter.ToUInt64(hash, 0);
         }
     }
 }
