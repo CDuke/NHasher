@@ -13,7 +13,7 @@
 	* FNV-1 64 bit result
 	* FNV-1A 32 bit result
 	* FNV-1A 64 bit result
-* [MurmutHash](https://github.com/aappleby/smhasher)
+* [MurmurHash](https://github.com/aappleby/smhasher)
 	* MurmurHash3\_x86_32
 	* MurmurHash3\_x86_128
 	* MurmurHash3\_x64_128
