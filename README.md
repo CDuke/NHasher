@@ -6,7 +6,9 @@
 [![codecov](https://codecov.io/gh/CDuke/NHasher/branch/master/graph/badge.svg)](https://codecov.io/gh/CDuke/NHasher)
 [![Semantic Versioning](https://img.shields.io/badge/semver-2.0.0-3D9FE0.svg)](http://semver.org/)
 
-## Hash Algoritms
+## Hash Algorithms
+All algorithms are inherited from [HashAlgorithm](https://msdn.microsoft.com/library/system.security.cryptography.hashalgorithm.aspx) class
+
 * [Adler32](https://wikipedia.org/wiki/Adler-32)
 * [Fowler–Noll–Vo](https://wikipedia.org/wiki/FNV)
 	* FNV-1 32 bit result
