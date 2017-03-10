@@ -10,7 +10,7 @@ namespace NHasher.Tests
     {
         [Theory]
         [MemberData(nameof(GetTestData))]
-        public void CheckHashes(uint expectedHash, string input)
+        public void CheckHashesString(uint expectedHash, string input)
         {
             using (var hasher = new Adler32())
             {
@@ -22,7 +22,7 @@ namespace NHasher.Tests
 
         [Theory]
         [MemberData(nameof(GetTestDataArray))]
-        public void CheckHashes(uint expectedHash, byte[] input)
+        public void CheckHashesArray(uint expectedHash, byte[] input)
         {
             using (var hasher = new Adler32())
             {

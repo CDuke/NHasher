@@ -17,7 +17,7 @@ namespace NHasher.Tests
         [InlineData(0, "abcdefghijklmnopqrstuvwxyz0123456789", 0x64f23ecf1609b766)]
         [InlineData(0, "Call me Ishmael. Some years ago--never mind how long precisely-", 0x02a2e85470d6fd96)]
         [InlineData(2654435761, "", 0xAC75FDA2929B17EF)]
-        public void CheckHashes(uint seed, string input, ulong expectedHash)
+        public void CheckHashesString(uint seed, string input, ulong expectedHash)
         {
             using (var hasher = new XXHash64(seed))
             {
@@ -30,7 +30,7 @@ namespace NHasher.Tests
 
 		[Theory]
 		[MemberData(nameof(GetTestData))]
-        public void CheckHashes(uint seed, byte[] input, int count, ulong expectedHash)
+        public void CheckHashesArray(uint seed, byte[] input, int count, ulong expectedHash)
         {
             using (var hasher = new XXHash64(seed))
             {
