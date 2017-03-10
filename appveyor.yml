@@ -40,7 +40,7 @@ test_script:
 
     $target = '-target:C:\Program Files\dotnet\dotnet.exe'
 
-    $targetArgs = '-targetargs: test ' + $ENV:APPVEYOR_BUILD_FOLDER + '\test\NHasher.Tests -c ' + $ENV:CONFIGURATION
+    $targetArgs = '-targetargs: test ' + $ENV:APPVEYOR_BUILD_FOLDER + '\test\NHasher.Tests\NHasher.Tests.csproj -c ' + $ENV:CONFIGURATION
 
     $filter = '-filter:+[NHasher*]* -[NHasher.Tests]* -[NHasher.Benchmarks]*'
 
